@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<script src="flags.js?v=2026.11.16-1"></script>
+<link rel="stylesheet" href="ds/tokens/fonts.css">
+<link rel="stylesheet" href="ds/tokens/colors.css">
+<link rel="stylesheet" href="ds/tokens/typography.css">
+<link rel="stylesheet" href="ds/tokens/spacing.css">
+<link rel="stylesheet" href="ds/tokens/shadows.css">
+<link rel="stylesheet" href="ds/tokens/base.css">
+<link rel="stylesheet" href="ds/components.css">
+<link rel="stylesheet" href="ds/styles.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0D5257;font-family:Roboto,system-ui,sans-serif}
+a{color:#495057}a:hover{color:#0D5257}
+@keyframes axSpin{to{transform:rotate(360deg)}}
+@keyframes axCardIn{from{opacity:0;transform:translateY(.75rem)}to{opacity:1;transform:none}}
+</style>
+</helmet>
+<div style="position:relative;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;color:#083D41">
+  <div style="position:fixed;inset:0;background:linear-gradient(160deg,#0f6b71,#083D41)"><div style="position:absolute;inset:0;background:url('assets/hero-buildings.png') center/cover no-repeat"></div><div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(115% 95% at 50% 45%,rgba(0,0,0,0) 45%,rgba(0,0,0,.22) 80%,rgba(0,0,0,.4) 100%)"></div></div>
+  <header style="position:sticky;top:0;z-index:10;display:flex;align-items:center;min-height:4.5rem;background:#0D5257;box-shadow:0 2px 10px rgba(0,0,0,.12);padding:16px 32px">
+    <a href="#" style="display:block;line-height:0;width:min(26rem,60vw)"><img src="assets/orx-wordmark-color.svg" alt="OfficialRecordsXpress" style="display:block;width:100%;height:auto;filter:brightness(0) invert(1)"></a>
+  </header>
+  <main style="position:relative;z-index:1;flex:1;display:flex;align-items:center;justify-content:center;padding:40px 16px">
+    <section style="width:100%;max-width:32.5rem;padding:40px;background:#fff;border:1px solid rgba(255,255,255,.35);border-radius:1.5rem;box-shadow:0 20px 60px rgba(0,0,0,.25);animation:axCardIn 300ms ease-out both">
+      <div style="display:flex;flex-direction:column;align-items:flex-start;gap:12px;text-align:left">
+        <img src="assets/orx-wordmark-color.svg" alt="OfficialRecordsXpress" style="display:block;width:16rem;max-width:100%;height:auto">
+        <sc-if value="{{ isPassword }}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{ back }}" style="display:inline-flex;align-items:center;gap:8px;margin:0;padding:0;border:none;background:transparent;font-family:inherit;font-size:.8125rem;color:#495057;cursor:pointer;font-weight:600"><i class="bi bi-arrow-left"></i><span>{{ email }}</span></button></sc-if>
+        <h1 style="margin:2px 0 0;font-size:1.75rem;line-height:1.2;font-weight:600;color:#181D27">{{ title }}</h1>
+        <sc-if value="{{ error }}" hint-placeholder-val="{{ false }}"><p role="alert" style="margin:0;font-size:14px;line-height:1.45;color:#E33B32">{{ error }}</p></sc-if>
+        <sc-if value="{{ showSub }}" hint-placeholder-val="{{ true }}"><p style="margin:0;font-size:.9375rem;line-height:1.5;color:#535862">{{ subtitle }}</p></sc-if>
+      </div>
+      <form onSubmit="{{ submit }}" novalidate style="margin-top:1.75rem;display:flex;flex-direction:column;gap:1.125rem">
+        <sc-if value="{{ isEmailish }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <label style="font-size:14px;font-weight:500;color:#495057">Email <span style="color:#E33B32">*</span></label>
+            <input type="email" value="{{ email }}" onInput="{{ setEmail }}" placeholder="you@example.com" style="width:100%;height:3rem;padding:0 .875rem;font-family:inherit;font-size:16px;color:#495057;background:#fff;border:1px solid {{ emailBorder }};border-radius:8px;outline:none" style-hover="border-color:#6EA8FE" style-focus="border-color:#6EA8FE;box-shadow:inset 0 0 0 1px #6EA8FE">
+          </div>
+        </sc-if>
+        <sc-if value="{{ isPassword }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <label style="font-size:14px;font-weight:500;color:#495057">Password <span style="color:#E33B32">*</span></label>
+            <div style="display:flex;align-items:center;gap:6px;height:3rem;padding:0 6px 0 .875rem;background:#fff;border:1px solid {{ pwBorder }};border-radius:8px">
+              <input type="{{ pwType }}" value="{{ password }}" onInput="{{ setPassword }}" placeholder="Enter your password" style="flex:1;min-width:0;height:100%;border:none;outline:none;background:transparent;font-family:inherit;font-size:16px;color:#495057">
+              <button type="button" onClick="{{ toggleEye }}" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:2.75rem;height:2.75rem;border:none;border-radius:8px;background:transparent;color:#5c6f71;font-size:18px;cursor:pointer" style-hover="background:#F2F2F2"><i class="{{ eyeIcon }}"></i></button>
+            </div>
+            <sc-if value="{{ pwEmptyErr }}" hint-placeholder-val="{{ false }}"><p role="alert" style="margin:0;font-size:.8125rem;color:#E33B32">Enter your password</p></sc-if>
+          </div>
+          <div><a href="#" onClick="{{ goForgot }}" style="font-size:14px;text-decoration:none">Forgot my password</a></div>
+        </sc-if>
+        <sc-if value="{{ isCode }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <label style="font-size:14px;font-weight:500;color:#495057">Verification code</label>
+            <input type="text" inputmode="numeric" maxlength="6" value="{{ code }}" onInput="{{ setCode }}" placeholder="Enter code" style="width:100%;height:3rem;padding:0 .875rem;font-family:inherit;font-size:16px;color:#495057;background:#fff;border:1px solid {{ codeBorder }};border-radius:8px;outline:none" style-hover="border-color:#6EA8FE" style-focus="border-color:#6EA8FE;box-shadow:inset 0 0 0 1px #6EA8FE">
+            <p style="margin:0;font-size:.8125rem;color:#535862">Didn’t receive a code? <a href="#" onClick="{{ resend }}" style="font-weight:500;text-decoration:none">Resend</a></p>
+          </div>
+        </sc-if>
+        <sc-if value="{{ isChange }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:1.125rem">
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <label style="font-size:14px;font-weight:500;color:#495057">New Password <span style="color:#E33B32">*</span></label>
+              <div style="display:flex;align-items:center;gap:6px;height:3rem;padding:0 6px 0 .875rem;background:#fff;border:1px solid {{ newBorder }};border-radius:8px">
+                <input type="{{ newType }}" value="{{ newPw }}" onInput="{{ setNewPw }}" placeholder="Enter your password" style="flex:1;min-width:0;height:100%;border:none;outline:none;background:transparent;font-family:inherit;font-size:16px;color:#495057">
+                <button type="button" onClick="{{ toggleNew }}" style="width:2.75rem;height:2.75rem;border:none;border-radius:8px;background:transparent;color:#5c6f71;font-size:18px;cursor:pointer" style-hover="background:#F2F2F2"><i class="{{ newEye }}"></i></button>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <label style="font-size:14px;font-weight:500;color:#495057">Confirm Password <span style="color:#E33B32">*</span></label>
+              <div style="display:flex;align-items:center;gap:6px;height:3rem;padding:0 6px 0 .875rem;background:#fff;border:1px solid {{ newBorder }};border-radius:8px">
+                <input type="{{ confType }}" value="{{ confirm }}" onInput="{{ setConfirm }}" placeholder="Enter your password" style="flex:1;min-width:0;height:100%;border:none;outline:none;background:transparent;font-family:inherit;font-size:16px;color:#495057">
+                <button type="button" onClick="{{ toggleConf }}" style="width:2.75rem;height:2.75rem;border:none;border-radius:8px;background:transparent;color:#5c6f71;font-size:18px;cursor:pointer" style-hover="background:#F2F2F2"><i class="{{ confEye }}"></i></button>
+              </div>
+            </div>
+            <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px">
+              <sc-for list="{{ rules }}" as="r" hint-placeholder-count="6"><li style="display:flex;align-items:center;gap:10px;font-size:.8125rem;color:#495057"><i class="bi bi-check-lg" style="font-size:.9375rem;color:{{ r.color }}"></i>{{ r.label }}</li></sc-for>
+            </ul>
+          </div>
+        </sc-if>
+        <button type="submit" disabled="{{ disabled }}" style="width:100%;height:3rem;border:none;border-radius:8px;background:{{ btnBg }};color:{{ btnFg }};font-family:inherit;font-size:16px;font-weight:500;cursor:{{ btnCursor }};box-shadow:0 1px 2px rgba(10,13,18,.06);display:inline-flex;align-items:center;justify-content:center;gap:10px">
+          <sc-if value="{{ loading }}" hint-placeholder-val="{{ false }}"><span style="width:1.125rem;height:1.125rem;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:axSpin .7s linear infinite"></span></sc-if>
+          <span>{{ label }}</span>
+        </button>
+        <sc-if value="{{ notEmail }}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{ backToLogin }}" style="width:100%;height:3rem;background:#fff;border:1px solid #CED4DA;border-radius:8px;font-family:inherit;font-size:16px;font-weight:500;color:#212529;cursor:pointer;box-shadow:0 1px 2px rgba(10,13,18,.05)" style-hover="background:#F8F9FA;border-color:#ADB5BD">Back to Log In</button></sc-if>
+        <sc-if value="{{ showSso }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:1.125rem">
+            <div style="display:flex;align-items:center;gap:14px;color:#7b8b8d;font-size:.8125rem;font-weight:500"><span style="flex:1;height:1px;background:#DEE2E6"></span>OR<span style="flex:1;height:1px;background:#DEE2E6"></span></div>
+            <button type="button" onClick="{{ signIn }}" style="display:flex;align-items:center;justify-content:center;gap:10px;width:100%;height:3rem;background:#fff;border:1px solid #8A8886;border-radius:10px;font-family:inherit;font-size:16px;font-weight:500;color:#201F1E;cursor:pointer" style-hover="background:#F3F2F1;border-color:#605E5C">
+              <svg width="18" height="18" viewBox="0 0 18 18"><rect x="0" y="0" width="8.2" height="8.2" fill="#F25022"></rect><rect x="9.8" y="0" width="8.2" height="8.2" fill="#7FBA00"></rect><rect x="0" y="9.8" width="8.2" height="8.2" fill="#00A4EF"></rect><rect x="9.8" y="9.8" width="8.2" height="8.2" fill="#FFB900"></rect></svg>Sign in with Microsoft</button>
+          </div>
+        </sc-if>
+      </form>
+    </section>
+  </main>
+  <footer style="position:relative;z-index:1;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:24px;padding:20px 32px 24px;font-size:14px;background:#0D5257">
+    <a href="#" style="color:rgba(255,255,255,.8);text-decoration:none" style-hover="color:#fff;text-decoration:underline">Terms &amp; Conditions</a>
+    <a href="#" style="color:rgba(255,255,255,.8);text-decoration:none" style-hover="color:#fff;text-decoration:underline">Contact Us</a>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showSso&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Prototype flags&quot;},&quot;accountNotFound&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Prototype flags&quot;},&quot;wrongCredentials&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Prototype flags&quot;},&quot;resetLinkFails&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Prototype flags&quot;},&quot;codeMismatch&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Prototype flags&quot;},&quot;changeFails&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Prototype flags&quot;}}">
+class Component extends DCLogic {
+  state = { step: 'email', email: '', password: '', code: '', newPw: '', confirm: '', loading: false, error: '', bad: '', pwErr: false, eye: false, eyeN: false, eyeC: false };
+  static ROUTES = { email: '', password: '#/password', forgot: '#/forgot-password', code: '#/forgot-password/code', change: '#/forgot-password/new-password' };
+  stepFromHash() { const h = location.hash; return Object.keys(Component.ROUTES).find(k => Component.ROUTES[k] && Component.ROUTES[k] === h) || 'email'; }
+  sample(step, s) { const p = {}; if (step !== 'email' && !s.email.trim()) p.email = 'jordan.lee@agency.gov'; if (step === 'change' && !s.password) p.password = 'OldPassw0rd!2025'; return p; }
+  componentDidMount() {
+    const st = this.stepFromHash();
+    if (location.hash && !Component.ROUTES[st]) history.replaceState(null, '', location.pathname + location.search);
+    if (st !== 'email') this.setState(s => ({ ...this.sample(st, s), step: st }));
+    this.onPop = () => { const n = this.stepFromHash(); this.setState(s => ({ ...this.sample(n, s) })); this.go(n, false); };
+    window.addEventListener('popstate', this.onPop);
+  }
+  componentWillUnmount() { window.removeEventListener('popstate', this.onPop); }
+  go(step, push) { clearTimeout(this.t); if (push !== false && location.hash !== Component.ROUTES[step]) history.pushState({ step }, '', location.pathname + location.search + Component.ROUTES[step]); this.setState({ step, loading: false, error: '', bad: '', pwErr: false }); }
+  rules() {
+    const p = this.state.newPw;
+    return [['One lowercase character', /[a-z]/.test(p)], ['One uppercase character', /[A-Z]/.test(p)], ['One number character', /[0-9]/.test(p)], ['One special character', /[^A-Za-z0-9]/.test(p)], ['11+ characters', p.length >= 11], ['Different than previous passwords', p.length > 0 && p !== this.state.password]];
+  }
+  renderVals() {
+    const s = this.state, st = s.step, P = this.props;
+    const flag = (k) => !!(P[k] ?? (window.ORX_FLAGS || {})[k]);
+    const rules = this.rules().map(r => ({ label: r[0], color: r[1] ? '#1F945C' : '#ADB5BD' }));
+    const rulesPass = rules.every(r => r.color === '#1F945C');
+    const disabled = s.loading || (st === 'forgot' && !s.email.trim()) || (st === 'code' && !s.code.trim()) || (st === 'change' && !(rulesPass && s.confirm.length > 0));
+    const subs = { email: 'Welcome back! Please enter your details.', password: '', forgot: 'Enter your email & we’ll send you reset instructions.', code: 'Enter the code sent to ' + (s.email || 'your email'), change: 'Set a new password for your account.' };
+    const titles = { email: 'Log in to your account', password: 'Enter Password', forgot: 'Forgot password?', code: 'Reset password', change: 'Change password' };
+    const labels = { email: 'Next', password: 'Log In', forgot: 'Send Reset Instructions', code: 'Continue', change: 'Set Password' };
+    const loads = { email: 'Checking…', password: 'Signing in…', forgot: 'Sending…', code: 'Verifying…', change: 'Saving…' };
+    const red = '#E33B32', gray = '#CED4DA';
+    const signIn = () => { this.setState({ loading: true }); this.t = setTimeout(() => { location.href = 'dashboard.dc.html'; }, 1000); };
+    return {
+      isEmailish: st === 'email' || st === 'forgot', isPassword: st === 'password', isCode: st === 'code', isChange: st === 'change', notEmail: st !== 'email',
+      title: titles[st], subtitle: subs[st], showSub: !!subs[st] && !s.error, error: s.error, label: s.loading ? loads[st] : labels[st],
+      email: s.email, password: s.password, code: s.code, newPw: s.newPw, confirm: s.confirm, rules, loading: s.loading, disabled,
+      showSso: flag('showSso') && st === 'email',
+      btnBg: disabled ? '#F1F3F4' : '#0D5257', btnFg: disabled ? '#98A2A3' : '#fff', btnCursor: disabled ? 'default' : 'pointer',
+      emailBorder: s.bad === 'email' ? red : gray, pwBorder: s.bad === 'pw' ? red : gray, codeBorder: s.bad === 'code' ? red : gray, newBorder: s.bad === 'new' ? red : gray,
+      pwEmptyErr: s.pwErr, pwType: s.eye ? 'text' : 'password', eyeIcon: s.eye ? 'bi bi-eye-slash' : 'bi bi-eye',
+      newType: s.eyeN ? 'text' : 'password', newEye: s.eyeN ? 'bi bi-eye-slash' : 'bi bi-eye', confType: s.eyeC ? 'text' : 'password', confEye: s.eyeC ? 'bi bi-eye-slash' : 'bi bi-eye',
+      toggleEye: () => this.setState({ eye: !s.eye }), toggleNew: () => this.setState({ eyeN: !s.eyeN }), toggleConf: () => this.setState({ eyeC: !s.eyeC }),
+      setEmail: e => this.setState({ email: e.target.value, bad: '', error: '' }), setPassword: e => this.setState({ password: e.target.value, bad: '', pwErr: false, error: '' }),
+      setCode: e => this.setState({ code: e.target.value, bad: '', error: '' }), setNewPw: e => this.setState({ newPw: e.target.value, bad: '', error: '' }), setConfirm: e => this.setState({ confirm: e.target.value, bad: '', error: '' }),
+      back: () => { this.setState({ password: '' }); this.go('email'); }, goForgot: e => { e.preventDefault(); this.setState({ password: '' }); this.go('forgot'); },
+      resend: e => { e.preventDefault(); this.setState({ code: '' }); },
+      backToLogin: () => { this.setState({ password: '', code: '', newPw: '', confirm: '' }); this.go('email'); },
+      signIn,
+      submit: e => {
+        e.preventDefault(); if (s.loading || disabled) return;
+        const em = s.email.trim();
+        if (st === 'email' || st === 'forgot') {
+          if (!em) return this.setState({ bad: 'email', error: 'Enter a valid email address.' });
+          if (flag('accountNotFound')) return this.setState({ bad: 'email', error: 'We couldn’t find an account with that username. Try another.' });
+          if (st === 'email') return this.go('password');
+          if (flag('resetLinkFails')) return this.setState({ error: 'We are having trouble sending your reset link. Please try again.' });
+          return this.go('code');
+        }
+        if (st === 'password') {
+          if (!s.password) return this.setState({ bad: 'pw', pwErr: true });
+          if (flag('wrongCredentials')) return this.setState({ bad: 'pw', error: 'The email or password you entered is incorrect. Please try again.' });
+          return signIn();
+        }
+        if (st === 'code') {
+          if (flag('codeMismatch')) return this.setState({ bad: 'code', error: 'The entered code does not match. Please try again.' });
+          return this.go('change');
+        }
+        if (s.newPw !== s.confirm) return this.setState({ bad: 'new', error: 'Passwords do not match. Please ensure that both entries are identical and try again.' });
+        if (flag('changeFails')) return this.setState({ error: 'We are having trouble changing your password. Please try again.' });
+        this.setState({ loading: true }); this.t = setTimeout(() => { this.setState({ password: '', code: '', newPw: '', confirm: '' }); this.go('email'); }, 1200);
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>
