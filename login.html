@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign in – OfficialRecordsXpress</title>
+<link rel="stylesheet" href="vendor/bootstrap-icons/bootstrap-icons.min.css">
+<link rel="stylesheet" href="ds/styles.css?v=a11y1">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:Roboto,system-ui,sans-serif;background:#0D5257;overflow-x:hidden;color:#083D41}
+[hidden]{display:none!important}
+@keyframes axSpin{to{transform:rotate(360deg)}}
+@keyframes axCardIn{from{opacity:0;transform:translateY(0.75rem)}to{opacity:1;transform:none}}
+
+.page{position:relative;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+.bg{position:fixed;inset:0;z-index:0;background:linear-gradient(160deg,#0f6b71,#083D41)}
+.bg-photo{position:absolute;inset:0;background:url('ds/assets/img/hero-buildings.png') center/cover no-repeat}
+.bg-vignette{position:absolute;inset:0;pointer-events:none;background:radial-gradient(115% 95% at 50% 45%, rgba(0,0,0,0) 45%, rgba(0,0,0,0.22) 80%, rgba(0,0,0,0.4) 100%)}
+
+.ax-header{position:sticky;top:0;z-index:10;display:flex;align-items:center;min-height:4.5rem;width:100%;background:#0D5257;box-shadow:0 2px 10px rgba(0,0,0,.12);padding:var(--ax-space-4)}
+.ax-logo-header{display:block;line-height:0;width:12rem}
+.ax-logo-header img{display:block;width:100%;height:auto;filter:brightness(0) invert(1)}
+
+main{position:relative;z-index:1;flex:1;display:flex;align-items:center;justify-content:center;padding:var(--ax-space-10) var(--ax-space-4)}
+.ax-card{width:92%;max-width:32.5rem;padding:var(--ax-space-6);background:#fff;border:1px solid rgba(255,255,255,0.35);border-radius:var(--ax-radius-3xl,1.5rem);box-shadow:0 20px 60px rgba(0,0,0,.25);animation:axCardIn 300ms ease-out both}
+.card-head{display:flex;flex-direction:column;align-items:flex-start;gap:var(--ax-space-3);text-align:left}
+.ax-logo-card{display:block;line-height:0;width:12rem}
+.ax-logo-card img{display:block;width:100%;height:auto}
+.back{display:inline-flex;align-items:center;gap:var(--ax-space-2);margin:0;padding:0;border:none;background:transparent;font-family:inherit;font-size:.8125rem;color:#495057;cursor:pointer;font-weight:600}
+.back:hover{color:#343A40;text-decoration:underline}
+h1{margin:var(--ax-space-0-5) 0 0;font-size:1.75rem;line-height:1.2;font-weight:600;color:#181D27}
+.form-error{margin:0;font-size:var(--ax-text-sm);line-height:1.45;color:#E33B32}
+.subtitle{margin:0;font-size:.9375rem;line-height:1.5;color:#535862}
+
+form{margin-top:1.75rem;display:flex;flex-direction:column;gap:1.125rem}
+.field{display:flex;flex-direction:column;gap:var(--ax-space-1-5)}
+.field label{font-size:var(--ax-text-sm);font-weight:500;color:#495057}
+.req{color:#E33B32}
+.input{width:100%;height:3rem;padding:0 .875rem;font-family:inherit;font-size:var(--ax-text-md);color:#495057;background:#fff;border:1px solid #CED4DA;border-radius:var(--ax-radius-md);outline:none;transition:border-color 200ms ease,box-shadow 200ms ease}
+.input:hover,.pw:hover{border-color:#6EA8FE}
+.input:focus{border-color:#6EA8FE;box-shadow:inset 0 0 0 1px #6EA8FE,0 1px 2px 0 rgba(10,13,18,.05)}
+.input.invalid,.pw.invalid{border-color:#E33B32}
+.pw{display:flex;align-items:center;gap:var(--ax-space-1-5);height:3rem;padding:0 var(--ax-space-1-5) 0 .875rem;background:#fff;border:1px solid #CED4DA;border-radius:var(--ax-radius-md);transition:border-color 200ms ease,box-shadow 200ms ease}
+.pw:focus-within{border-color:#6EA8FE;box-shadow:inset 0 0 0 1px #6EA8FE,0 1px 2px 0 rgba(10,13,18,.05)}
+.pw input{flex:1;min-width:0;height:100%;border:none;outline:none;background:transparent;font-family:inherit;font-size:var(--ax-text-md);color:#495057}
+.eye{flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:2.75rem;height:2.75rem;border:none;border-radius:var(--ax-radius-md);background:transparent;color:#5c6f71;font-size:var(--ax-text-lg);cursor:pointer;transition:background 200ms ease}
+.eye:hover{background:#F2F2F2}
+.eye:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(0,182,189,.45)}
+.field-err{margin:0;font-size:.8125rem;color:#E33B32}
+.forgot{font-size:var(--ax-text-sm);color:#495057;text-decoration:none}
+.forgot:hover{color:#0D5257;text-decoration:underline}
+.hint{margin:0;font-size:.8125rem;color:#535862}
+.hint a{font-weight:500;color:#495057;text-decoration:none}
+.hint a:hover{color:#343A40;font-weight:600}
+.rules{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:var(--ax-space-2)}
+.rules li{display:flex;align-items:center;gap:.625rem;font-size:.8125rem;color:#495057}
+.rules i{font-size:.9375rem;color:#ADB5BD}
+.rules li.met i{color:#1F945C}
+
+.submit{width:100%;height:3rem;border:none;border-radius:var(--ax-radius-md);background:#0D5257;color:#fff;font-family:inherit;font-size:var(--ax-text-md);font-weight:500;cursor:pointer;box-shadow:0 1px 2px rgba(10,13,18,.06);transition:background 200ms ease,transform 200ms ease,box-shadow 200ms ease;display:inline-flex;align-items:center;justify-content:center;gap:.625rem}
+.submit:hover:not(:disabled){background:#0A4145;transform:translateY(-1px);box-shadow:0 6px 16px rgba(0,109,119,.3)}
+.submit:active:not(:disabled){transform:none}
+.submit:focus-visible{outline:none;box-shadow:0 0 0 4px rgba(0,182,189,.45)}
+.submit:disabled{cursor:default;background:#F1F3F4;color:#98A2A3;transform:none;box-shadow:none}
+.spin{width:1.125rem;height:1.125rem;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:axSpin .7s linear infinite}
+.secondary{width:100%;height:3rem;background:#fff;border:1px solid #CED4DA;border-radius:var(--ax-radius-md);font-family:inherit;font-size:var(--ax-text-md);font-weight:500;color:#212529;cursor:pointer;box-shadow:0 1px 2px rgba(10,13,18,.05);transition:background 200ms ease,border-color 200ms ease}
+.secondary:hover{background:#F8F9FA;border-color:#ADB5BD}
+.secondary:focus-visible{outline:none;box-shadow:0 0 0 4px rgba(0,182,189,.35)}
+.or{display:flex;align-items:center;gap:.875rem;color:#7b8b8d;font-size:.8125rem;font-weight:500}
+.or span{flex:1;height:1px;background:#DEE2E6}
+.sso{display:flex;align-items:center;justify-content:center;gap:.625rem;width:100%;height:3rem;background:#fff;border:1px solid #8A8886;border-radius:var(--ax-radius-lg);font-family:inherit;font-size:var(--ax-text-md);font-weight:500;color:#201F1E;cursor:pointer}
+.sso:hover{background:#F3F2F1;border-color:#605E5C}
+
+.ax-foot{position:relative;z-index:1;display:flex;width:100%;padding:var(--ax-space-5) var(--ax-space-8) var(--ax-space-6);font-size:var(--ax-text-sm);background:#0D5257;flex-direction:column;align-items:center;text-align:center;gap:var(--ax-space-3)}
+.ax-foot-links{display:flex;margin-left:auto;flex-direction:column;align-items:center;gap:.625rem}
+.ax-foot a{color:rgba(255,255,255,.8);text-decoration:none}
+.ax-foot a:hover{color:#fff;text-decoration:underline}
+
+@media (min-width:768px){
+  .ax-logo-header{width:18rem}
+  .ax-logo-card{width:14rem}
+  .ax-card{width:27.5rem;padding:var(--ax-space-8)}
+  .ax-header{padding:var(--ax-space-4) var(--ax-space-8)}
+  .ax-foot{flex-direction:row;justify-content:space-between;align-items:center;text-align:left;gap:var(--ax-space-5)}
+  .ax-foot-links{flex-direction:row;align-items:center;gap:var(--ax-space-6)}
+}
+@media (min-width:1024px){
+  .ax-logo-header{width:26rem}
+  .ax-logo-card{width:16rem}
+  .ax-card{width:32.5rem;padding:var(--ax-space-10)}
+}
+@media (prefers-reduced-motion:reduce){.ax-card{animation:none}.submit{transition:none}}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="bg" aria-hidden="true"><div class="bg-photo"></div><div class="bg-vignette"></div></div>
+
+  <header class="ax-header">
+    <a href="login.html" class="ax-logo-header" aria-label="OfficialRecordsXpress home"><img src="ds/assets/logos/orx-wordmark-color.svg" alt="OfficialRecordsXpress"></a>
+  </header>
+
+  <main>
+    <section class="ax-card" aria-labelledby="ax-login-title">
+      <div class="card-head">
+        <span class="ax-logo-card"><img src="ds/assets/logos/orx-wordmark-color.svg" alt="OfficialRecordsXpress"></span>
+        <button type="button" class="back" id="backBtn" hidden><i class="bi bi-arrow-left" aria-hidden="true"></i><span id="backEmail"></span></button>
+        <h1 id="ax-login-title">Log in to your account</h1>
+        <p class="form-error" id="formError" role="alert" hidden></p>
+        <p class="subtitle" id="subtitle">Welcome back! Please enter your details.</p>
+      </div>
+
+      <form id="form" novalidate>
+        <div class="field" data-show="email forgot">
+          <label for="ax-email">Email <span class="req" aria-hidden="true">*</span></label>
+          <input class="input" id="ax-email" name="email" type="email" autocomplete="username" placeholder="you@example.com" aria-required="true">
+        </div>
+
+        <div class="field" data-show="password">
+          <label for="ax-password">Password <span class="req" aria-hidden="true">*</span></label>
+          <div class="pw" id="pwWrap">
+            <input id="ax-password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password" aria-required="true" aria-describedby="ax-pw-err">
+            <button type="button" class="eye" data-eye="ax-password" aria-label="Show password" title="Show password"><i class="bi bi-eye" aria-hidden="true"></i></button>
+          </div>
+          <p class="field-err" id="ax-pw-err" role="alert" hidden>Enter your password</p>
+        </div>
+        <div data-show="password">
+          <a href="#" class="forgot" id="goForgot">Forgot my password</a>
+        </div>
+
+        <div class="field" data-show="code">
+          <label for="ax-code">Verification code</label>
+          <input class="input" id="ax-code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" placeholder="Enter code" maxlength="6">
+          <p class="hint">Didn’t receive a code? <a href="#" id="resend">Resend</a></p>
+        </div>
+
+        <div class="field" data-show="change" style="gap:1.125rem">
+          <div class="field">
+            <label for="ax-new-pw">New Password <span class="req" aria-hidden="true">*</span></label>
+            <div class="pw" id="newPwWrap">
+              <input id="ax-new-pw" name="new-password" type="password" autocomplete="new-password" placeholder="Enter your password">
+              <button type="button" class="eye" data-eye="ax-new-pw" aria-label="Show password" title="Show password"><i class="bi bi-eye" aria-hidden="true"></i></button>
+            </div>
+          </div>
+          <div class="field">
+            <label for="ax-confirm-pw">Confirm Password <span class="req" aria-hidden="true">*</span></label>
+            <div class="pw" id="confirmPwWrap">
+              <input id="ax-confirm-pw" name="confirm-password" type="password" autocomplete="new-password" placeholder="Enter your password">
+              <button type="button" class="eye" data-eye="ax-confirm-pw" aria-label="Show password" title="Show password"><i class="bi bi-eye" aria-hidden="true"></i></button>
+            </div>
+          </div>
+          <ul class="rules" id="rules"></ul>
+        </div>
+
+        <button type="submit" class="submit" id="submit"><span class="spin" id="spin" aria-hidden="true" hidden></span><span id="submitLabel">Next</span></button>
+        <button type="button" class="secondary" id="backToLogin" data-show="forgot code change">Back to Log In</button>
+
+        <div data-show="sso" style="display:flex;flex-direction:column;gap:1.125rem">
+          <div class="or" aria-hidden="true"><span></span>OR<span></span></div>
+          <button type="button" class="sso" id="ssoBtn">
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><rect x="0" y="0" width="8.2" height="8.2" fill="#F25022"></rect><rect x="9.8" y="0" width="8.2" height="8.2" fill="#7FBA00"></rect><rect x="0" y="9.8" width="8.2" height="8.2" fill="#00A4EF"></rect><rect x="9.8" y="9.8" width="8.2" height="8.2" fill="#FFB900"></rect></svg>
+            Sign in with Microsoft
+          </button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <footer class="ax-foot">
+    <div class="ax-foot-links">
+      <a href="#">Terms &amp; Conditions</a>
+      <a href="#">Contact Us</a>
+    </div>
+  </footer>
+</div>
+
+<script src="flags.js?v=2026.11.16-2"></script>
+<script>
+(function () {
+  // Prototype flags. Defaults live in flags.js; anything missing falls back to "off".
+  var F = Object.assign({ showSso: false, accountNotFound: false, wrongCredentials: false, resetLinkFails: false, codeMismatch: false, changeFails: false }, window.ORX_FLAGS || {});
+  var MAIN_PAGE = 'dashboard.html';
+
+  var $ = function (id) { return document.getElementById(id); };
+  var state = { step: 'email', loading: false, password: '' };
+  var timer = null;
+
+  var TITLES = { email: 'Log in to your account', password: 'Enter Password', forgot: 'Forgot password?', code: 'Reset password', change: 'Change password' };
+  var LABELS = { email: 'Next', password: 'Log In', forgot: 'Send Reset Instructions', code: 'Continue', change: 'Set Password' };
+  var LOADING = { email: 'Checking…', password: 'Signing in…', forgot: 'Sending…', code: 'Verifying…', change: 'Saving…' };
+
+  function subtitleFor(step) {
+    var email = $('ax-email').value.trim();
+    return { email: 'Welcome back! Please enter your details.', password: '', forgot: 'Enter your email & we’ll send you reset instructions.', code: 'Enter the code sent to ' + (email || 'your email'), change: 'Set a new password for your account.' }[step];
+  }
+
+  function rules() {
+    var p = $('ax-new-pw').value;
+    return [
+      ['One lowercase character', /[a-z]/.test(p)],
+      ['One uppercase character', /[A-Z]/.test(p)],
+      ['One number character', /[0-9]/.test(p)],
+      ['One special character', /[^A-Za-z0-9]/.test(p)],
+      ['11+ characters', p.length >= 11],
+      ['Different than previous passwords', p.length > 0 && p !== state.password]
+    ];
+  }
+
+  function setError(msg) { $('formError').textContent = msg || ''; render(); }
+
+  function render() {
+    var s = state.step, err = $('formError').textContent;
+    document.querySelectorAll('[data-show]').forEach(function (el) {
+      var keys = el.getAttribute('data-show').split(' ');
+      var on = keys.indexOf(s) !== -1 || (keys.indexOf('sso') !== -1 && F.showSso);
+      el.hidden = !on;
+    });
+    $('ax-login-title').textContent = TITLES[s];
+    var sub = subtitleFor(s);
+    $('subtitle').textContent = sub;
+    $('subtitle').hidden = !sub || !!err;
+    $('formError').hidden = !err;
+    $('backBtn').hidden = s !== 'password';
+    $('backEmail').textContent = $('ax-email').value.trim();
+    $('spin').hidden = !state.loading;
+    $('submitLabel').textContent = state.loading ? LOADING[s] : LABELS[s];
+    $('submit').setAttribute('aria-busy', state.loading ? 'true' : 'false');
+
+    var r = rules();
+    $('rules').innerHTML = '';
+    r.forEach(function (x) {
+      var li = document.createElement('li');
+      if (x[1]) li.className = 'met';
+      li.innerHTML = '<i class="bi bi-check-lg" aria-hidden="true"></i>';
+      li.appendChild(document.createTextNode(x[0]));
+      $('rules').appendChild(li);
+    });
+    var rulesPass = r.every(function (x) { return x[1]; });
+    $('submit').disabled = state.loading ||
+      (s === 'forgot' && !$('ax-email').value.trim()) ||
+      (s === 'code' && !$('ax-code').value.trim()) ||
+      (s === 'change' && !(rulesPass && $('ax-confirm-pw').value.length > 0));
+  }
+
+  // ---- Deep links: one URL hash per screen (start screen = plain URL) ----
+  var ROUTES = { email: '', password: '#/password', forgot: '#/forgot-password', code: '#/forgot-password/code', change: '#/forgot-password/new-password' };
+  var SAMPLE_EMAIL = 'jordan.lee@agency.gov';
+  function stepFromHash(hash) {
+    for (var k in ROUTES) { if (ROUTES[k] && ROUTES[k] === hash) return k; }
+    return 'email';
+  }
+  function urlFor(step) { return location.pathname + location.search + ROUTES[step]; }
+  // Opening a screen directly: fill in the data it needs and skip loading.
+  function fillSample(step) {
+    if (step !== 'email' && !$('ax-email').value.trim()) $('ax-email').value = SAMPLE_EMAIL;
+    if (step === 'change' && !state.password) state.password = 'OldPassw0rd!2025';
+  }
+
+  function go(step, push) {
+    clearTimeout(timer);
+    if (push !== false && (location.hash || '') !== ROUTES[step]) history.pushState({ step: step }, '', urlFor(step));
+    state.step = step; state.loading = false;
+    $('formError').textContent = '';
+    ['ax-email', 'ax-code'].forEach(function (id) { $(id).classList.remove('invalid'); });
+    ['pwWrap', 'newPwWrap', 'confirmPwWrap'].forEach(function (id) { $(id).classList.remove('invalid'); });
+    $('ax-pw-err').hidden = true;
+    render();
+    var focusId = { email: 'ax-email', password: 'ax-password', forgot: 'ax-email', code: 'ax-code', change: 'ax-new-pw' }[step];
+    setTimeout(function () { $(focusId).focus(); }, 0);
+  }
+
+  function backToLogin() {
+    ['ax-password', 'ax-code', 'ax-new-pw', 'ax-confirm-pw'].forEach(function (id) { $(id).value = ''; });
+    go('email');
+  }
+
+  function signIn() {
+    state.loading = true; render();
+    clearTimeout(timer);
+    timer = setTimeout(function () { window.location.href = MAIN_PAGE; }, 1000);
+  }
+
+  $('form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (state.loading) return;
+    var s = state.step, email = $('ax-email').value.trim();
+    if (s === 'email' || s === 'forgot') {
+      if (!email) { $('ax-email').classList.add('invalid'); return setError('Enter a valid email address.'); }
+      if (F.accountNotFound) { $('ax-email').classList.add('invalid'); return setError('We couldn’t find an account with that username. Try another.'); }
+      if (s === 'email') return go('password');
+      if (F.resetLinkFails) return setError('We are having trouble sending your reset link. Please try again.');
+      return go('code');
+    }
+    if (s === 'password') {
+      if (!$('ax-password').value) { $('pwWrap').classList.add('invalid'); $('ax-pw-err').hidden = false; return; }
+      if (F.wrongCredentials) { $('pwWrap').classList.add('invalid'); return setError('The email or password you entered is incorrect. Please try again.'); }
+      state.password = $('ax-password').value;
+      return signIn();
+    }
+    if (s === 'code') {
+      if (F.codeMismatch) { $('ax-code').classList.add('invalid'); return setError('The entered code does not match. Please try again.'); }
+      return go('change');
+    }
+    if (s === 'change') {
+      if ($('ax-new-pw').value !== $('ax-confirm-pw').value) {
+        $('newPwWrap').classList.add('invalid'); $('confirmPwWrap').classList.add('invalid');
+        return setError('Passwords do not match. Please ensure that both entries are identical and try again.');
+      }
+      if (F.changeFails) return setError('We are having trouble changing your password. Please try again.');
+      state.loading = true; render();
+      clearTimeout(timer);
+      timer = setTimeout(backToLogin, 1200);
+    }
+  });
+
+  $('ax-email').addEventListener('input', function () { this.classList.remove('invalid'); $('formError').textContent = ''; render(); });
+  $('ax-password').addEventListener('input', function () { $('pwWrap').classList.remove('invalid'); $('ax-pw-err').hidden = true; $('formError').textContent = ''; render(); });
+  $('ax-code').addEventListener('input', function () { this.classList.remove('invalid'); $('formError').textContent = ''; render(); });
+  ['ax-new-pw', 'ax-confirm-pw'].forEach(function (id) {
+    $(id).addEventListener('input', function () { $('newPwWrap').classList.remove('invalid'); $('confirmPwWrap').classList.remove('invalid'); $('formError').textContent = ''; render(); });
+  });
+
+  $('backBtn').addEventListener('click', function () { $('ax-password').value = ''; go('email'); });
+  $('goForgot').addEventListener('click', function (e) { e.preventDefault(); $('ax-password').value = ''; go('forgot'); });
+  $('backToLogin').addEventListener('click', backToLogin);
+  $('resend').addEventListener('click', function (e) { e.preventDefault(); $('ax-code').value = ''; render(); });
+  $('ssoBtn').addEventListener('click', signIn);
+
+  document.querySelectorAll('[data-eye]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var input = $(btn.getAttribute('data-eye')), show = input.type === 'password';
+      input.type = show ? 'text' : 'password';
+      btn.querySelector('i').className = show ? 'bi bi-eye-slash' : 'bi bi-eye';
+      var label = show ? 'Hide password' : 'Show password';
+      btn.setAttribute('aria-label', label); btn.title = label;
+    });
+  });
+
+  window.addEventListener('popstate', function () {
+    var step = stepFromHash(location.hash);
+    fillSample(step);
+    go(step, false);
+  });
+
+  var initial = stepFromHash(location.hash);
+  if (location.hash && !ROUTES[initial]) history.replaceState(null, '', urlFor('email')); // unknown link → start
+  fillSample(initial);
+  if (initial !== 'email') go(initial, false); else render();
+})();
+</script>
+</body>
+</html>
