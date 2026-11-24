@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>try{if(top!==window)document.documentElement.classList.add("emb")}catch(e){document.documentElement.classList.add("emb")}</script><style>html.emb #app-sidebar,html.emb #pre-sb,html.emb body::before{display:none!important}html.emb{scrollbar-gutter:stable}</style>
+<script>try{if(window.parent!==window&&/shell\.html$/.test(window.parent.location.pathname))document.documentElement.classList.add("emb")}catch(e){}</script><style>html.emb #app-sidebar,html.emb #pre-sb,html.emb body::before{display:none!important}html.emb{scrollbar-gutter:stable}</style>
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -145,9 +145,9 @@ class Component extends DCLogic {
     return { pgLoad: this.state.pgLoad,
       menuLeft: c ? 'calc(4.75rem + 8px)' : 'calc(17.5rem + 8px)', userJ: c ? 'center' : 'flex-start', userGap: c ? '0px' : '12px', userPx: c ? '0px' : '12px', userFlex: c ? '0 0 0' : '1', chevShow: c ? 'none' : 'inline-block', lblDisp: c ? 'none' : 'block', navMt: c ? '1rem' : '20px', userTip: s.menu ? '' : 'Olivia Rhye · Account menu', hdrPad: c ? '0px' : '0 0 0 8px', toggleW: c ? '100%' : '2.75rem', sbW: c ? '4.75rem' : '17.5rem', lblOp: c ? 0 : 1, lblMax: c ? '0px' : '16rem', toggleMl: c ? '0px' : '4px', hdrDir: c ? 'column' : 'row', hdrAlign: c ? 'center' : 'flex-start', hdrGap: c ? '1rem' : '0px', markW: c ? '2.5rem' : '0px', markH: c ? '2.5rem' : '0px', markOp: c ? 1 : 0,
       toggleIcon: 'bi bi-layout-sidebar', toggleTitle: c ? 'Expand navigation' : 'Collapse navigation',
-      toggle: e => { e.stopPropagation(); const n = !c; try { localStorage.setItem('orx-sb', n ? '1' : '0'); } catch (x) {} this.setState({ collapsed: n, menu: false }); },
-      nav: mkNav([['bi bi-grid-1x2', 'Dashboard'], ['bi bi-bar-chart', 'Reports & Reconciliation'], ['bi bi-file-earmark-text', 'Certificate Orders'], ['bi bi-pie-chart', 'Apostille Queue'], ['bi bi-pen', 'Signature Administration'], ['bi bi-globe2', 'e-Register Verify']]),
-      navBottom: mkNav([['bi bi-shield-check', 'Audit Log'], ['bi bi-gear', 'Platform Settings']]),
+      toggle: e => { e.stopPropagation(); const n = !c; try { localStorage.setItem('orx-sb', n ? '1' : '0'); } catch (x) {} document.documentElement.style.setProperty('--sbw', n ? '4.75rem' : '17.5rem'); this.setState({ collapsed: n, menu: false }); },
+      nav: mkNav([['bi bi-grid-1x2', 'Dashboard'], ['bi bi-bar-chart', 'Reports & Reconciliation'], ['bi bi-file-earmark-text', 'Certificate Orders'], ['bi bi-pie-chart', 'Apostille Queue'], ['bi bi-pen', 'Signature Administration'], ['bi bi-globe2', 'e-Register Verify'], ['bi bi-shield-check', 'Audit Log'], ['bi bi-gear', 'Platform Settings']]),
+      navBottom: [],
       menuOpen: s.menu, toggleMenu: e => { e.stopPropagation(); this.setState({ menu: !s.menu, open: false }); },
 
       skip: e => { e.preventDefault(); const m = document.getElementById('main-content'); if (m) m.focus(); },
