@@ -29,10 +29,11 @@ nav{display:flex;flex-direction:column;gap:4px;margin-top:20px}nav.b{margin-top:
 #app.c .it span,#app.c .who{opacity:0;pointer-events:none;position:absolute;width:0}
 .it:focus-visible,button:focus-visible{outline:3px solid #0D5257;outline-offset:2px}
 .tg{flex:0 0 auto;width:2.75rem;height:2.75rem;border:1px solid #CED4DA;border-radius:8px;background:#fff;color:#495057;font-size:16px;cursor:pointer}.tg:hover{background:#F1F3F4}
-[data-tip]:hover::after,[data-tip]:focus-visible::after{content:attr(data-tip);position:absolute;left:calc(100% + 10px);top:50%;transform:translateY(-50%);padding:6px 10px;border-radius:6px;background:#181D27;color:#fff;font-size:13px;white-space:nowrap;pointer-events:none;z-index:70}
+[data-tip]:hover::after,[data-tip]:focus-visible::after{content:attr(data-tip);animation:tip 120ms ease-out;position:absolute;left:calc(100% + 10px);top:50%;transform:translateY(-50%);padding:6px 10px;border-radius:6px;background:#181D27;color:#fff;font-size:13px;white-space:nowrap;pointer-events:none;z-index:70}
+#menu.o ~ .ub::after{display:none!important}
 #app:not(.c) [data-tip]:not(.tg):hover::after,#app:not(.c) [data-tip]:not(.tg):focus-visible::after{display:none}
 .um{position:relative;margin-top:14px}
-.ub{width:100%;height:4rem;display:flex;align-items:center;gap:12px;padding:0 10px;background:#fff;border:1px solid #CED4DA;border-radius:10px;font-family:inherit;text-align:left;cursor:pointer}.ub:hover{background:#F8F9FA}
+.ub{position:relative;width:100%;height:4rem;display:flex;align-items:center;gap:12px;padding:0 10px;background:#fff;border:1px solid #CED4DA;border-radius:10px;font-family:inherit;text-align:left;cursor:pointer}.ub:hover{background:#F8F9FA}
 .av{flex:0 0 2.5rem;width:2.5rem;height:2.5rem;border-radius:50%;background:#E9ECEF;display:grid;place-items:center;font-weight:600;color:#495057}
 .who{min-width:0;white-space:nowrap;font-size:15px;font-weight:600}.who small{display:block;font-size:14px;font-weight:400;color:#495057}
 #app.c .ub{height:auto;aspect-ratio:1;padding:0;justify-content:center;gap:0}
@@ -45,6 +46,7 @@ iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#FAF
 iframe.on{opacity:1;pointer-events:auto}
 #bar{position:absolute;top:0;left:0;right:0;height:3px;z-index:5;overflow:hidden;opacity:0;transition:opacity 100ms;pointer-events:none}
 #bar.l{opacity:1}#bar::after{content:"";display:block;width:40%;height:100%;background:#0D5257;animation:b 1s ease-in-out infinite}
+@keyframes tip{from{opacity:0}to{opacity:1}}
 @keyframes b{from{transform:translateX(-100%)}to{transform:translateX(250%)}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 @media (max-width:760px){#app{--sbw:4.75rem}#app .brand{display:none}#app .mark{display:block}#app .it span,#app .who{display:none}.tg{display:none}}
@@ -67,7 +69,7 @@ iframe.on{opacity:1;pointer-events:auto}
         <a class="it" href="profile.dc.html" data-p="profile.dc.html"><i class="bi bi-person"></i><span style="opacity:1;position:static;width:auto;pointer-events:auto">My Profile</span></a>
         <a class="it" href="login.dc.html" id="out" style="border-top:1px solid #E9ECEF;border-radius:0 0 8px 8px"><i class="bi bi-box-arrow-right"></i><span style="opacity:1;position:static;width:auto;pointer-events:auto">Log Out</span></a>
       </div>
-      <button class="ub" id="ub" type="button" aria-expanded="false" aria-label="Account menu, Olivia Rhye, Agency Admin"><span class="av">OR</span><span class="who">Olivia Rhye<small>Agency Admin</small></span></button>
+      <button class="ub" id="ub" type="button" aria-expanded="false" data-tip="Olivia Rhye · Account menu" aria-label="Account menu, Olivia Rhye, Agency Admin"><span class="av">OR</span><span class="who">Olivia Rhye<small>Agency Admin</small></span></button>
     </div>
   </aside>
   <main>
@@ -86,18 +88,21 @@ var F=[document.getElementById('f0'),document.getElementById('f1')],cur=0,page=n
 P.push(['audit-log.dc.html','Audit Log','bi-shield-check'],['settings.dc.html','Platform Settings','bi-gear']);
 [P,B].forEach(function(L,k){var n=document.getElementById(k?'n2':'n1');L.forEach(function(p){var a=document.createElement('a');a.className='it';a.href=p[0];a.dataset.p=p[0];a.dataset.tip=p[1];a.setAttribute('aria-label',p[1]);a.innerHTML=(p[2].charAt(0)==='<'?'<i>'+p[2]+'</i>':'<i class="bi '+p[2]+'"></i>')+'<span aria-hidden="true">'+p[1]+'</span>';n.appendChild(a)});});
 T['dashboard.dc.html']='Dashboard';P.concat(B).forEach(function(p){T[p[0]]=p[1]});
-function setC(c){app.classList.toggle('c',c);tg.setAttribute('aria-expanded',String(!c));var t=c?'Expand navigation':'Collapse navigation';tg.dataset.tip=t;tg.setAttribute('aria-label',t);try{localStorage.setItem('orx-sb',c?'1':'0')}catch(e){}}
+function setC(c,np){app.classList.toggle('c',c);tg.setAttribute('aria-expanded',String(!c));var t=c?'Expand navigation':'Collapse navigation';tg.dataset.tip=t;tg.setAttribute('aria-label',t);if(!np)try{localStorage.setItem('orx-sb',c?'1':'0')}catch(e){}}
 setC(document.documentElement.dataset.c==='1');
+var mq=window.matchMedia('(max-width:900px)');function fit(){if(mq.matches)setC(true,true);else setC(localStorage.getItem('orx-sb')==='1',true)}
+if(mq.addEventListener)mq.addEventListener('change',fit);if(mq.matches)setC(true,true);
 tg.onclick=function(){menu.classList.remove('o');setC(!app.classList.contains('c'))};
 function mark(p){document.querySelectorAll('[data-p]').forEach(function(a){if(a.dataset.p===p&&a.closest('nav'))a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});document.title=(T[p]||'')+' — OfficialRecordsXpress'}
 /* Navigation: active item + URL hash update synchronously on click; content loads in the hidden frame, then cross-fades. */
-function go(p,push){if(!T[p])p='dashboard.dc.html';if(p===page)return;page=p;mark(p);if(push!==false)history.pushState(null,'','#'+p);
+function go(p,push,hash){if(!T[p])p='dashboard.dc.html';if(p===page){if(hash)try{F[cur].contentWindow.location.hash=hash}catch(e){}return}page=p;mark(p);if(push!==false)history.pushState(null,'','#'+p);
  var id=++seq,next=F[1-cur],prev=F[cur];bar.classList.add('l');
  next.onload=function(){if(id!==seq)return;try{next.contentWindow.scrollTo(0,0)}catch(e){}
   next.classList.add('on');next.removeAttribute('aria-hidden');prev.classList.remove('on');prev.setAttribute('aria-hidden','true');cur=1-cur;bar.classList.remove('l');
   setTimeout(function(){if(id===seq)prev.src='about:blank'},200);
   try{next.contentWindow.addEventListener('pagehide',function(){})}catch(e){}};
- next.src=p;}
+ next.src=p+(hash?'#'+hash:'');}
+window.addEventListener('message',function(e){var d=e.data;if(d&&d.orx==='go'&&T[d.p])go(d.p,true,d.h)});
 document.addEventListener('click',function(e){var a=e.target.closest('a[data-p]');if(!a)return;e.preventDefault();menu.classList.remove('o');ub.setAttribute('aria-expanded','false');go(a.dataset.p)});
 document.getElementById('out').onclick=function(e){e.preventDefault();location.href='login.dc.html'};
 ub.onclick=function(e){e.stopPropagation();var o=menu.classList.toggle('o');ub.setAttribute('aria-expanded',String(o))};
