@@ -8,12 +8,13 @@ Clickable prototype of the ORX back-office for Utah County Clerk & Auditor, buil
 | --- | --- |
 | `index.html` | Redirects to the login page |
 | `shell.html` | Persistent app shell: sidebar mounts once; pages load in the content frame (`shell.html#page.dc.html`) |
-| `signature-administration.html` | Placeholder (not yet designed) |
-| `e-register-verify.html` | Placeholder (not yet designed) |
+| `signature-administration.html` | Placeholder ("Design in progress"); redirects into `shell.html` when opened alone |
+| `e-register-verify.html` | Placeholder ("Design in progress"); redirects into `shell.html` when opened alone |
 | `login.dc.html` | Log in, forgot password, code check, new password, success |
 | `dashboard.dc.html` | Dashboard with date-range picker and live stat cards |
-| `certificate-orders.dc.html` | Certificate Orders with per-column checkbox filters and sorting. Click a row for the order detail view (timeline, certificate details, customer, paper/digital recipient), a certificate preview modal and a revoke flow |
-| `apostille-queue.dc.html` | Apostille Queue: affirm signature, select, process, snooze. Click a row to open that order |
+| `certificate-orders.dc.html` | Certificate Orders with per-column checkbox filters and sorting. Click a row for the order detail view (order and customer details, collapsible certificate / spouses / witnesses / officiant sections, mailing information or digital recipients, activity timeline), a certificate preview modal and a revoke flow |
+| `apostille-queue.dc.html` | Apostille Queue: affirm signature, select, process, snooze (menu follows the default in Platform Settings). Tabs for Order Queue and Processed Batches, each with search and per-column filters. Click an order to open it, or a batch to open its overview |
+| `batch-order.dc.html` | Order Overview for a processed batch: batch details and a paginated sub-orders table (format and status match Certificate Details). Opens from a batch in Processed Batches (`batch-order.dc.html#<batch id>`); not in the sidebar |
 | `reports-reconciliation.dc.html` | Reports & Reconciliation with per-column filters and CSV export |
 | `audit-log.dc.html` | Audit Log with expandable rows and CSV export |
 | `settings.dc.html` | Platform Settings (queue defaults, notifications) |
@@ -53,4 +54,5 @@ The `.nojekyll` file is included. In the repository settings choose **Pages → 
 - When the sidebar is collapsed, hovering or keyboard-focusing an icon shows its name as a tooltip.
 - All data is sample data; nothing is sent to a server.
 - Bootstrap Icons load from the jsDelivr CDN, so an internet connection is needed for icons.
-- Settings and profile changes are kept in the browser's local storage.
+- Settings, profile changes and processed batches are kept in the browser's local storage (`orx-settings2`, `orx-batches`).
+- Sub-order rows on the batch overview page are generated sample data derived from the seven sample orders.

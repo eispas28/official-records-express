@@ -40,7 +40,7 @@ class AxMap extends HTMLElement{
     .filter(e=>(e.type!=='wheel'||e.ctrlKey||e.metaKey)&&!e.button)
     .on('start',()=>svg.style('cursor','grabbing')).on('end',()=>svg.style('cursor','grab'))
     .on('zoom',e=>gg.attr('transform',e.transform));
-   svg.call(z);
+   svg.call(z);svg.style('touch-action','pan-y pinch-zoom');
    const bar=document.createElement('div');bar.style.cssText='position:absolute;right:8px;top:8px;display:flex;flex-direction:column;border-radius:8px;overflow:hidden;z-index:1';
    [['bi-plus-lg','Zoom in',()=>svg.transition().duration(200).call(z.scaleBy,1.6)],['bi-dash-lg','Zoom out',()=>svg.transition().duration(200).call(z.scaleBy,1/1.6)],['bi-arrows-angle-contract','Reset view',()=>svg.transition().duration(300).call(z.transform,d3.zoomIdentity)]].forEach(([i,l,fn])=>{const b=document.createElement('button');b.type='button';b.setAttribute('aria-label',l);b.title=l;b.style.cssText=btn;b.innerHTML=`<i class="bi ${i}" aria-hidden="true"></i>`;b.onclick=fn;bar.appendChild(b)});
    this.appendChild(bar);
